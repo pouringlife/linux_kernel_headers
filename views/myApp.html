@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <title>AJS scope event</title>
+  <style>
+
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <p></p>
+  <div class="container-fluid">
+    <div class="jumbotron">
+      <h1> AWST - 데이터 수집 WebApp</h1>
+    </div>
+
+    <div ng-controller="Characters">
+      <div class="row">
+        <div ng-include="'/template/sideBar.html'"></div>
+
+        <div ng-include="'/template/graphs.html'" ng-show="page_graph==true"></div>
+        <div ng-include="'/template/databases.html'" ng-show="page_graph==false"></div>
+      </div>
+    </div>
+</div>
+<div class="clearfix visible-lg"></div>
+
+  <script src = "http://code.angularjs.org/1.2.9/angular.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="/js/canvasjs.min.js"></script>
+  <script src = "/js/myApp.js"></script>
+  <script src = "/js/socket.min.js"></script>
+
+</body>
+</html>

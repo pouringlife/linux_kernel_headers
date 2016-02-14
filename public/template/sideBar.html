@@ -1,0 +1,63 @@
+<div class="col-md-2">
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" ng-click="page_change(true); clearDatabase();">Connected Devices</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-body">
+            <div ng-repeat="name in names" class="panel panel-default">
+                <div class="panel-body">
+                  <button type="button" class="btn btn-link btn-block" ng-click="setGraph();">{{name}} SET</button>
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" ng-click="database_check(); page_change(false);">Data Bases</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body">
+
+          <div class="panel-group" id="DB-panel">
+              <div class="panel panel-default" ng-repeat="db_name in db_names">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#DB-panel" href="#{{db_name}}">{{db_name}}</a>
+                  </h4>
+                </div>
+                <div id="{{db_name}}" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div ng-repeat="info in db_info[db_name]" class="panel panel-default">
+                        <div class="panel-body">
+                          <button type="button" class="btn btn-link btn-block" ng-click="setTableTab(); database_check(); clearDatabase();">{{info.date_of_ex.substring(0,4)+'-'+info.date_of_ex.substring(4,6)+'-'+info.date_of_ex.substring(6,8)}}</button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Logs</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

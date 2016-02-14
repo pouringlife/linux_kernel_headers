@@ -1,0 +1,77 @@
+<div class="col-md-10">
+  <rich-tabs>
+    <rich-pane title="{{name}}" list="names" ng-repeat="name in names">
+      <div class="row">
+        <div class="col-md-10">
+          <div ng-repeat="data in info[name]">
+            <div id="{{'chart_box'+name+data[0]}}" style="height: 300px; width: 100%;"></div>
+          </div>
+
+
+
+
+        </div>
+          <div class="col-md-2" ng-controller="Device_controller">
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Sampling Time</b></div>
+              <div class="panel-body">
+                <div class="container">
+                  <form role="form">
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" value="30" ng-model="sampling_time">30초</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" value="90" ng-model="sampling_time">90초</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" value="180" ng-model="sampling_time">180초</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" value="300" ng-model="sampling_time">300초</label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="panel-heading"><b>Sampling Rate</b></div>
+              <div class="panel-body">
+                <div class="container">
+                  <form role="form">
+                    <div class="radio" >
+                      <label><input type="radio" name="optradio" value="1" ng-model="sampling_rate">1Hz</label>
+                    </div>
+                    <div class="radio" >
+                      <label><input type="radio" name="optradio" value="5" ng-model="sampling_rate">5Hz</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" value="10" ng-model="sampling_rate">10Hz</label>
+                    </div>
+                    <div class="radio">
+                      <label><input type="radio" name="optradio" value="20" ng-model="sampling_rate">20Hz</label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+
+
+              <div class="panel-heading"><b>Data Points</b></div>
+              <div class="panel-body">
+                <div class="container">
+                  <form role="form">
+                    <div ng-include="'/template/dataPoints.html'">
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+
+
+            </div>
+            <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="startSend(); disable=true" ng-show="disable==false">Start!</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block" disabled="disabled" ng-show="disable==true">Loading...</button>
+          </div>
+        </div>
+    </rich-pane>
+  </rich-tabs>
+</div>
+</script>

@@ -1,0 +1,15 @@
+<div class="col-md-10">
+  <rich-tabs>
+    <rich-pane title="{{times}}" list= "current_number_of_ex" ng-repeat="times in current_number_of_ex">
+      <div ng-if="req_number == $index" class="container">
+        <h2><tr><th>{{current_db_name}} : </th><th>{{current_date_of_ex}}</th></tr></h2>
+        <p></p>
+            <div compile="db_data"></div>
+
+      </div>
+      <hr>
+      <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="exportToExcel('#current_table')" >
+        <span class="glyphicon glyphicon-share"></span> Data Download!</button>
+    </rich-pane>
+  </rich-tabs>
+</div>

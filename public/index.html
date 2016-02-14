@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<script type="text/javascript" src="./canvasjs.min.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+	<script type="text/javascript">
+	var socket = io.connect();
+
+</script>
+
+</head>
+<body>
+
+	<form action=''>
+		<b>Connected Devices</b>
+		<select id="connected_device">
+			<option value="none">none</option>
+	 </select>
+		<p></p><b>Sampling Time</b>
+		<Select id='sampling_time'>
+			<option value="10">10초</option>
+			<option value="30">30초</option>
+			<option value="60">60초</option>
+			<option value="180">180초</option>
+			<option value="300">300초</option>
+			<option value="600">600초</option>
+			<option value="900">900초</option>
+			<option value="1800">1800초</option>
+			<option value="2400">2400초</option>
+
+		</Select>
+		<p></p><b>Sampling rate</b>
+		<Select id='sampling_rate'>
+			<option value="1">1 Hz</option>
+			<option value="2">2 Hz</option>
+			<option value="5">5 Hz</option>
+			<option value="10">10 Hz</option>
+			<option value="20">20 Hz</option>
+		</Select>
+
+		<p></p><b>Graph data length</b>
+		<Select id='data_length'>
+			<option value="40">40개</option>
+			<option value="80">80개</option>
+			<option value="120">120개</option>
+			<option value="200">200개</option>
+		</Select>
+
+		<button>Start</button>
+	</form>
+	<div id="chartContainer" style="height: 500px; width: 100%;"></div>
+
+	<script>
+	var dps=[];
+	var opt=[];
+	var chart=[];
+	var chart_id = [];
+	var dataLength = 20;
+
+	socket.on('connect', function (){
+		socket.emit('brower_connect','testBrowser');
+		$('form').submit(function(){
+			socket.emit('brower_connect','testBrowser');
+			dataLength = $('#data_length').val();
+			 socket.emit('start to send',
+				 {sampling_rate:$('#sampling_rate').val(),
+				 sampling_time:$('#sampling_time').val(),
+				 device_name:$('#connected_device').val()
+			 });
+
+			 return false;
+		 });
+	});
+
+	socket.on('device_list',function(device_info){
+
+		var device_name = device_info.devices[0];
+		var data = device_info.data[device_name];
+
+			if(data!=undefined){
+
+				opt[device_name] = new Array;
+				dps[device_name] = new Array;
+				chart[device_name] = new Array;
+
+				for (var i=1;i<data.length;i++){
+
+						dps[device_name][i-1] = new Array;
+
+						opt[device_name][i-1] = {
+							zoomEnabled: true,
+							animationEnabled: true,
+							title:{
+								text: Object.keys(data[i])[0]
+							},
+							axisY2:{
+								valueFormatString:"0.0",
+						//    maximum: 1.2,
+						//    interval: .2,
+								interlacedColor: "#F5F5F5",
+								gridColor: "#D7D7D7",
+								tickColor: "#D7D7D7"
+							},
+							theme: "theme2",
+							toolTip:{
+								shared: true
+							},
+							legend:{
+								verticalAlign: "bottom",
+								horizontalAlign: "center",
+								fontSize: 15,
+								fontFamily: "Lucida Sans Unicode"
+
+							},
+							data: []
+
+						};
+
+					for (var j =0;j< Object.keys(data[i][Object.keys(data[i])[0]]).length; j++){
+						dps[device_name][i-1][j]=new Array();
+						opt[device_name][i-1].data.push({
+							type: "line",
+							lineThickness:3,
+							axisYType:"secondary",
+							showInLegend: true,
+							name: Object.keys(data[i])[0]+'.'+Object.keys(data[i][Object.keys(data[i])[0]])[j],
+							dataPoints: dps[device_name][i-1][j]});
+					}
+
+					chart_id[i-1] = "chartContainer";
+					chart[device_name][i-1] = new CanvasJS.Chart(chart_id[i-1],opt[device_name][i-1]);
+					chart[device_name][i-1].render();
+				}
+
+
+			}
+
+			$('#connected_device').empty();
+			for(var i=0;i<device_info.devices.length;i++){
+					$('#connected_device').append('<option value="'+device_info.devices[i]+'">'+device_info.devices[i]+"</option>");
+			}
+	});
+
+	socket.on('data from dev', function (pulse_obj) {
+		var device_name = pulse_obj.device_name;
+		var data = pulse_obj.data;
+	//	console.log(pulse_obj);
+	//	console.log(pulse_obj.data);
+					for (var i=1; i<data.length ; i++){
+						for (var j =0;j< Object.keys(data[i][Object.keys(data[i])[0]]).length; j++){
+								dps[device_name][i-1][j].push({x:data[0].time, y:data[i][Object.keys(data[i])[0]][Object.keys(data[i][Object.keys(data[i])[0]])[j]]})
+								if (dps[device_name][i-1][j].length > dataLength)
+									{
+										dps[device_name][i-1][j].shift();
+									}
+							}
+							chart[device_name][i-1].render();
+					}
+	});
+
+
+
+	</script>
+</body>
+</html>

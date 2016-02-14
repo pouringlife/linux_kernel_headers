@@ -1,0 +1,7 @@
+  <ul class="nav nav-tabs">
+    <li ng-repeat="photo in photos"
+      ng-class="{active:photo.selected}">
+      <a href="" ng-click="select(photo); Data_request_to_DB($index);">{{photo.title}}</a>
+    </li>
+  </ul>
+  <div ng-transclude></div>
